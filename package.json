@@ -1,0 +1,73 @@
+{
+  "name": "xrpcharities-metrics",
+  "version": "1.0.0",
+  "description": "Metrics page for the XRP Charities",
+  "main": "main.ts",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build --prod",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GSG-KingBlue/xrpcharities-metrics.git"
+  },
+  "keywords": [
+    "XRP",
+    "Charities",
+    "Metrics",
+    "XRPTipbot"
+  ],
+  "author": "Good Souls Group",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GSG-KingBlue/xrpcharities-metrics/issues"
+  },
+  "homepage": "https://github.com/GSG-KingBlue/xrpcharities-metrics#readme",
+  "dependencies": {
+    "@angular/animations": "^7.2.7",
+    "@angular/cdk": "^7.3.3",
+    "@angular/common": "^7.2.7",
+    "@angular/compiler": "^7.2.7",
+    "@angular/core": "^7.2.7",
+    "@angular/flex-layout": "^7.0.0-beta.23",
+    "@angular/forms": "^7.2.7",
+    "@angular/material": "^7.3.3",
+    "@angular/platform-browser": "^7.2.7",
+    "@angular/platform-browser-dynamic": "^7.2.7",
+    "@angular/router": "^7.2.7",
+    "chart.js": "^2.7.3",
+    "core-js": "^2.6.5",
+    "font-awesome": "^4.7.0",
+    "hammerjs": "^2.0.8",
+    "primeicons": "^1.0.0",
+    "primeng": "^7.0.5",
+    "rxjs": "~6.4.0",
+    "tslib": "^1.9.0",
+    "zone.js": "~0.8.26"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^0.12.4",
+    "@angular/cli": "^7.3.4",
+    "@angular/compiler-cli": "^7.2.7",
+    "@angular/language-service": "^7.2.7",
+    "@types/jasmine": "^2.8.16",
+    "@types/jasminewd2": "~2.0.3",
+    "@types/node": "^10.12.29",
+    "codelyzer": "~4.5.0",
+    "jasmine-core": "~2.99.1",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "^4.0.1",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "^2.0.5",
+    "karma-jasmine": "~1.1.2",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "protractor": "~5.4.0",
+    "ts-node": "~7.0.0",
+    "tslint": "~5.11.0",
+    "typescript": "~3.2.2"
+  }
+}

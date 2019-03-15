@@ -1,0 +1,24 @@
+<mat-toolbar id="primarybar" color="primary" class="mat-elevation-z6">
+    <span class="topbar-logo"></span>
+    <span class="topbar-middle">XRP Charities metrics page</span>
+    <div class="floatright tipbotheader">
+        <a amount="0.5" size="275" to="GoodXrp" network="twitter" href="https://www.xrptipbot.com" label="Send @GoodXrp" labelpt="Thank you!" target="_blank"></a>
+    </div>
+</mat-toolbar>
+<mat-toolbar id="secondarybar" color="secondary" class="mat-elevation-z6">
+    <button mat-button [routerLink]="['/']" matTooltip="Home">
+        <i class="material-icons topbar-menu-icon">home</i> Home
+    </button>
+    <button mat-button [routerLink]="['/statistics']" matTooltip="Statistics">
+        <i class="material-icons topbar-menu-icon">show_chart</i> Statistics
+    </button>
+    <button mat-button [routerLink]="['/aboutus']" matTooltip="About us">
+        <i class="material-icons topbar-menu-icon">people</i> About us
+    </button>
+    <button mat-button [routerLink]="['/whatwedo']" matTooltip="What we do">
+        <i class="material-icons topbar-menu-icon">thumb_up</i> What we do
+    </button>
+    <button mat-button [routerLink]="['/howitworks']" matTooltip="How it works">
+        <i class="material-icons topbar-menu-icon">help</i> How it works
+    </button>
+</mat-toolbar>

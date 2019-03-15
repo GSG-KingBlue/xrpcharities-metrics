@@ -1,0 +1,221 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~font-awesome/css/font-awesome.min.css";
+@import '~primeicons/primeicons.css';
+@import "~primeng/resources/themes/nova-light/theme.css";
+@import "~primeng/resources/primeng.min.css";
+
+body {
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-size: 16px;
+  line-height: 1.5em;
+  color: #212121;
+  -webkit-font-smoothing: antialiased;
+  padding: 0;
+  margin: 0;
+  background-color: #f7f7f7;
+  height: 100%;
+  width: 100% }
+
+body a {
+    text-decoration: none;
+}
+
+body .ui-messages {
+    margin: 0;
+}
+
+body .ui-table .ui-table-tbody > tr.ui-state-highlight, body .ui-table .ui-table-tbody > tr:nth-child(even).ui-state-highlight {
+    background-color: #2E7D32;
+}
+
+body .ui-widget-content p {
+    margin: 0.7em 0;
+}
+
+.ui-fluid .ui-card {
+    height: 100%;
+}
+
+.ui-fluid .ui-card-content, .ui-fluid .ui-card-body {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.mat-toolbar.mat-primary {
+    background: royalblue;
+    color: white;
+}
+
+.mat-toolbar.mat-secondary {
+    background: #507fe4fd;
+    color: white;
+}
+
+#primarybar.mat-toolbar-single-row {
+    height: 75px;
+}
+
+#secondarybar.mat-toolbar-single-row {
+    height: 36px;
+}
+
+div.prototype_stamp {
+    /*background: url("assets/layout/images/prototype.png") no-repeat;*/
+    background-size: 100%;
+    position: fixed;
+    left: 250px;
+    top: 0px;
+    width: 120px;
+    height: 68px;
+    z-index: 99;
+}
+@media (max-width: 1024px) {
+    div.prototype_stamp {
+        left: 200px;
+    }
+}
+
+.center-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.floatleft {
+    float: left;
+}
+  
+.floatright {
+    float: right;
+}
+
+.floatcenter {
+    display: inline-block;
+    margin: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.floatleftcenter {
+    float: left;
+    text-align: right;
+    justify-content: right;
+    width: 53%;
+}
+
+.floatrightcenter {
+    float: right;
+    text-align: left;
+    justify-content: left;
+    width: 47%;
+}
+
+.topbar-menu-icon {
+    font-size:1.2em;
+    padding: 0em 0.5em;
+}
+
+.topbar-logo {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    background: url("assets/layout/images/logo.png") top left no-repeat;
+    background-size: 50px 50px;
+}
+
+.charities-logo {
+    width: 300px;
+    height: 300px;
+    background: url("assets/layout/images/banner.png") top left no-repeat;
+    background-size: 300px 300px;
+}
+
+.topbar-middle {
+    margin-left: 1em;
+    font-size: 1em;
+    display: inline-block;
+}
+
+.topbar-right i {
+    font-size: 1.25em;
+}
+
+.legaldisclaimer {
+    display:block;
+    background: lightyellow;
+}
+
+#layout-content {
+    padding: 16px;
+}
+
+a.footer-text-left {
+    color: #212121;
+}
+
+a.footerlink {
+    float: left;
+    margin-right: 1em;
+}
+
+div.center {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+}
+
+label.xrpraised {
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    color: #E64A19;
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-top: 0.8em;
+    margin-bottom: 0.8em;
+}
+
+.ui-table {
+    width: 80%
+}
+
+.tipbotheader {
+    margin: 0 auto;
+    margin-right: 0;
+    margin-top: 0.6em;
+}
+
+.tipbotfooter {
+    width: 60%;
+    height: 50px;
+    display: inline-block;
+    margin: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 50px;
+    vertical-align: middle;
+}
+
+.footertext {
+    width: 20%;
+    line-height: 50px;
+    vertical-align: middle;
+}
+
+.footertext-right {
+    text-align: right;
+}
+
+.div-cards {
+    justify-content: center;
+    width: 99%;    
+}

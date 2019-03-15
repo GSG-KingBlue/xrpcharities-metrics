@@ -1,0 +1,28 @@
+<div class="ui-g ui-fluid">
+    <div class="floatleft" style="width: 450px; margin-left: 2em;" >
+            <p-card header="Select your options">
+                <div class="ui-g-12">
+                    <div class="floatleft">
+                        <p-dropdown [options]="availableCharities" [(ngModel)]="selectedCharity" optionLabel="label" (onChange)="refresh()"></p-dropdown>
+                    </div>
+                    <div class="floatcenter" style="padding-left: 1em;">
+                        <p-dropdown [options]="daysOrWeeksDropDown" [(ngModel)]="selectedDayOrWeek" (onChange)="refresh()"></p-dropdown>
+                    </div>
+                    <div class="floatcenter" style="padding-left: 1em;">
+                        <p-spinner size="3" [(ngModel)]="daysToReceive" [min]="1" [max]="20" [maxlength]="2" (onChange)="refreshSpinner()"></p-spinner>
+                    </div>
+                    <div class="floatright">
+                        <p-progressSpinner *ngIf="processing" [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="floatleft">
+                        <p-checkbox binary="true" label="Include direct Deposits" [(ngModel)]="includeDeposits" (onChange)="refresh()"></p-checkbox>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+    <div class="ui-g-12 center-screen" style="margin: 0 auto;">
+        <p-chart #barChart type="bar" [data]="chartData" [options]="options" width="95vw" height="50vh"></p-chart>
+    </div>
+</div>
