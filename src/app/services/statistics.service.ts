@@ -11,12 +11,21 @@ export class StatisticsService {
             let tipbotFeed = await this.api.callTipBotPublicPage(charity.handle);
             let xrpDeposited = await this.api.getAggregatedXRP("user_id="+charity.id+"&type=deposit");
             let stats = tipbotFeed.stats;
-            let xrpRaised = (stats.tips.received.amount*1000000 + xrpDeposited*1000000 + stats.donations.ilpDeposits.amount*1000000)/1000000;
-            //deduct 1089.75 XRP from bigbuckor -> these are donations regarding his blog before he started the charity
-            if(charity.id==='951179206104403968')
-                xrpRaised = xrpRaised-1089.75;
+            let xrpRaised = 0;
+            let currentBalance = 0;
+            //exclude @xrpcharities bot from the list but keep the amount which was raised until it got abandoned.
+            if(charity.id == '1082115799840632832') {
+                xrpRaised = 4410.100723
+            }
+            //normal calculation for all other charities and bots
+            else {
+                xrpRaised = (stats.tips.received.amount*1000000 + xrpDeposited*1000000 + stats.donations.ilpDeposits.amount*1000000)/1000000;
+                //deduct 1089.75 XRP from bigbuckor -> these are donations regarding his blog before he started the charity
+                if(charity.id==='951179206104403968')
+                    xrpRaised = xrpRaised-1089.75;
 
-            let currentBalance = tipbotFeed.stats.balance.amount;
+                currentBalance = tipbotFeed.stats.balance.amount;
+            }
 
             return [tipbotFeed.stats.balance.amount,currentBalance > xrpRaised ? currentBalance : xrpRaised];
         } catch {

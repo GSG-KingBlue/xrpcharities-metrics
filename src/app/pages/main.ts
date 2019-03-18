@@ -26,7 +26,7 @@ export class MainComponent implements OnInit {
   cote_uk:Charity = {handle: 'cote_uk', id:'21855719', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
   goodxrp:Charity = {handle: 'GoodXrp', id:'1059563470952247296', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
 
-  charities:Charity[] = [this.xrpcharities,this.stjude,this.wanderingware,this.cranders71,this.bigbuckor,this.onemorehome,this.cote_uk,this.goodxrp]
+  charities:Charity[] = [this.goodxrp,this.stjude,this.wanderingware,this.cranders71,this.bigbuckor,this.onemorehome,this.cote_uk,this.xrpcharities]
 
   allCharitiesReceived:number=0;
   allCharitiesReceivedTmp:number=0;
@@ -65,9 +65,9 @@ export class MainComponent implements OnInit {
       this.allCharitiesReceivedTmp=0;
       this.allCharitiesBalanceTmp=0;
       for(let i=0;i<this.charities.length;i++) {
-        //do not count donations to xrpcharities into total balance because these would be double counted then.
-        //xrpcharities is forwarding all tips/donations to the other charities
-        if(this.charities[i].id != '1082115799840632832') {
+        //do not count donations to xrpcharities & GoodXrp into total balance because these would be double counted then.
+        //xrpcharities & GoodXrp is forwarding all tips/donations to the other charities
+        if(this.charities[i].id != '1082115799840632832' && this.charities[i].id != '1059563470952247296') {
           this.allCharitiesReceivedTmp = (this.allCharitiesReceivedTmp*1000000 + this.charities[i].overallReceived*1000000)/1000000;
           this.allCharitiesBalanceTmp = (this.allCharitiesBalanceTmp*1000000 + this.charities[i].balance*1000000)/1000000;
         }
@@ -89,5 +89,9 @@ export class MainComponent implements OnInit {
       if(this.interval)
         clearInterval(this.interval);
     }
+  }
+
+  isXrpCharitiesOldBot(id:string): boolean {
+    return this.xrpcharities.id === id;
   }
 }
