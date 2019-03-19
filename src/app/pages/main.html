@@ -4,8 +4,8 @@
     </div>
     <br>
     <div class="ui-g-12 center-screen">
-        <label *ngIf="!goodxrp.isProcessing" class="xrpraised" type="text">{{goodxrp.overallReceived}} XRP raised by <a style="color: #003860" href="https://twitter.com/goodxrp">@GoodXrp</a></label>
-        <p-progressSpinner *ngIf="xrpcharities.isProcessing" [style]="{width: '70px', height: '70px'}"></p-progressSpinner>
+        <label *ngIf="!updatingTotals" class="xrpraised" type="text">{{allCharitiesReceived}} XRP raised by Good Souls Group</label>
+        <p-progressSpinner *ngIf="updatingTotals" [style]="{width: '70px', height: '70px'}"></p-progressSpinner>
     </div>
     <div class="ui-g-12 center-screen">
         <p-toggleButton [(ngModel)]="toogleChecked" (onChange)="toogleBalanceUpdate()" onLabel="Auto-Update Balances On" offLabel="Auto-Update Balances Off" onIcon="pi pi-check" offIcon="pi pi-times" [style]="{'width':'250px'}"></p-toggleButton>
@@ -23,8 +23,8 @@
             <ng-template pTemplate="body" let-charities>
                 <tr>
                     <!-- twitter link -->
-                    <td *ngIf="!isXrpCharitiesOldBot(charities['id'])"><a style="color:blue;" href="https://twitter.com/{{charities['handle']}}">@{{charities['handle']}}</a></td>
-                    <td *ngIf="isXrpCharitiesOldBot(charities['id'])">@{{charities['handle']}} (old)</td>
+                    <td *ngIf="!isXrpCharitiesOldBot(charities['id'])"><a style="color:blue;" href="https://twitter.com/{{charities['handle']}}">@{{charities['handle']}}{{charities['addInfo']}}</a></td>
+                    <td *ngIf="isXrpCharitiesOldBot(charities['id'])">@{{charities['handle']}}{{charities['addInfo']}}</td>
                     <!-- tipbot link -->
                     <td *ngIf="!isXrpCharitiesOldBot(charities['id'])"><a style="color:blue;" href="https://www.xrptipbot.com/u:{{charities['handle']}}/n:twitter">xrptipbot.com/{{charities['handle']}}</a></td>
                     <td *ngIf="isXrpCharitiesOldBot(charities['id'])">xrptipbot.com/{{charities['handle']}}</td>
@@ -39,7 +39,7 @@
             </ng-template>
             <ng-template pTemplate="footer">
                 <tr>
-                    <td>Total (excluding @GoodXrp)</td>
+                    <td>Total (excluding both bots)</td>
                     <td></td>
                     <td>{{allCharitiesBalance}} XRP</td>
                     <td>{{allCharitiesReceived}} XRP</td>

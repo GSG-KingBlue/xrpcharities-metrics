@@ -4,6 +4,7 @@ import { StatisticsService } from '../services/statistics.service';
 interface Charity {
   handle: string,
   id: string,
+  addInfo: string,
   balance: number,
   overallReceived: number,
   isProcessing: boolean,
@@ -17,14 +18,14 @@ interface Charity {
 
 export class MainComponent implements OnInit {
   
-  xrpcharities:Charity = {handle: 'xrpcharities', id:'1082115799840632832', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
-  stjude:Charity = {handle: 'StJude', balance: 0, id:'9624042', overallReceived: 0, isProcessing: true, isInternalProcessing: false}
-  wanderingware:Charity = {handle: 'WanderingWare', id:'3443786712', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
-  cranders71:Charity = {handle: 'cranders71', id:'970803226470531072', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
-  bigbuckor:Charity = {handle: 'bigbuckor', id:'951179206104403968', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
-  onemorehome:Charity = {handle: 'onemorehome', id:'1080843472129658880', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
-  cote_uk:Charity = {handle: 'cote_uk', id:'21855719', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
-  goodxrp:Charity = {handle: 'GoodXrp', id:'1059563470952247296', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
+  xrpcharities:Charity = {handle: 'xrpcharities', id:'1082115799840632832', addInfo:' (old bot)', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
+  stjude:Charity = {handle: 'StJude', balance: 0, id:'9624042', addInfo:'', overallReceived: 0, isProcessing: true, isInternalProcessing: false}
+  wanderingware:Charity = {handle: 'WanderingWare', id:'3443786712', addInfo:'', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
+  cranders71:Charity = {handle: 'cranders71', id:'970803226470531072', addInfo:'', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
+  bigbuckor:Charity = {handle: 'bigbuckor', id:'951179206104403968', addInfo:'', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
+  onemorehome:Charity = {handle: 'onemorehome', id:'1080843472129658880', addInfo:'', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
+  cote_uk:Charity = {handle: 'cote_uk', id:'21855719', addInfo:'', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
+  goodxrp:Charity = {handle: 'GoodXrp', id:'1059563470952247296', addInfo:' (tip splitter bot)', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
 
   charities:Charity[] = [this.goodxrp,this.stjude,this.wanderingware,this.cranders71,this.bigbuckor,this.onemorehome,this.cote_uk,this.xrpcharities]
 
@@ -34,6 +35,7 @@ export class MainComponent implements OnInit {
   allCharitiesBalanceTmp:number=0;
   interval: any;
   toogleChecked: boolean = true;
+  updatingTotals:boolean = true;
 
   constructor(public statistics: StatisticsService) {}
 
@@ -42,7 +44,7 @@ export class MainComponent implements OnInit {
     this.toogleBalanceUpdate();
   }
 
-  async getBalances() {
+  async getBalances(isInit?: boolean) {
     for(let i=0;i<this.charities.length;i++)
       this.charities[i].isInternalProcessing=true;
 
@@ -54,10 +56,13 @@ export class MainComponent implements OnInit {
       charity.isInternalProcessing = false;
     });
 
-    setTimeout(() => this.updateTotals(),500)
+    setTimeout(() => this.updateTotals(isInit),500)
   }
 
-  updateTotals() {
+  updateTotals(isInit?: boolean) {
+    if(isInit)
+      this.updatingTotals = true;
+
     if(this.charities.filter(charity => charity.isInternalProcessing).length>0) {
       setTimeout(() => this.updateTotals(),500)
     }
@@ -75,6 +80,7 @@ export class MainComponent implements OnInit {
 
       this.allCharitiesBalance = this.allCharitiesBalanceTmp;
       this.allCharitiesReceived = this.allCharitiesReceivedTmp;
+      this.updatingTotals = false;
     }
   }
 
