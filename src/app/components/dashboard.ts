@@ -30,14 +30,13 @@ export class DashboardComponent implements OnInit {
     constructor(public statistics: StatisticsService) {
         let currentDate = new Date();
         this.availableCharities = [
-            {label:'xrpcharities', value:'1082115799840632832'},
+            {label:'GoodXrp', value:'1059563470952247296'},
             {label:'StJude', value:'9624042'},
             {label:'WanderingWare', value:'3443786712'},
             {label:'cranders71', value:'970803226470531072'},
             {label:'bigbuckor', value:'951179206104403968'},
             {label:'onemorehome', value:'1080843472129658880'},
             {label:'cote_uk', value:'21855719'},
-            {label:'GoodXrp', value:'1059563470952247296'},
         ]
         this.selectedCharity = this.availableCharities[0];
 
