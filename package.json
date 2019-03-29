@@ -1,6 +1,6 @@
 {
   "name": "xrpcharities-metrics",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Metrics page for the XRP Charities",
   "main": "main.ts",
   "scripts": {
@@ -50,7 +50,7 @@
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.12.4",
+    "@angular-devkit/build-angular": "^0.13.7",
     "@angular/cli": "^7.3.4",
     "@angular/compiler-cli": "^7.2.7",
     "@angular/language-service": "^7.2.7",

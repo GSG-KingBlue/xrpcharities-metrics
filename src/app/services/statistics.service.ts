@@ -59,7 +59,7 @@ export class StatisticsService {
         let directDepositsXRP:any[] = [];
         let dateTimes:any[] = [];
 
-        let upperDate = new Date();
+        let upperDate = this.setHigherTime(new Date());
         let nextLowDate = new Date();
         let lowestDate = new Date();
         //next low day should be last monday if we calculate weeks
