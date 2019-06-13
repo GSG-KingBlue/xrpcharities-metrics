@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild} from "@angular/core";
+import { ActivatedRoute } from '@angular/router';
 import { StatisticsService } from '../services/statistics.service';
 import { ChartModule } from 'primeng/chart';
 
@@ -34,7 +35,7 @@ export class DashboardComponent implements OnInit {
 
     executionTimeout;
 
-    constructor(public statistics: StatisticsService) {
+    constructor(public statistics: StatisticsService, private route: ActivatedRoute) {
         let currentDate = new Date();
         this.availableCharities = [
             {handle:'GoodXrp', id:'1059563470952247296', startDate: '2019-03-19'},
@@ -97,6 +98,16 @@ export class DashboardComponent implements OnInit {
     }
 
     async ngOnInit() {
+        let charityInQuery = this.route.snapshot.queryParamMap.get('charity');
+        if(charityInQuery && charityInQuery.trim().length>0) {
+            for(let i = 0; i < this.availableCharities.length; i++) {
+                if(charityInQuery === this.availableCharities[i].handle) {
+                    this.selectedCharity = this.availableCharities[i];
+                    break;
+                }
+            }
+        }
+        
         this.refreshAll();
     }
 
@@ -132,7 +143,7 @@ export class DashboardComponent implements OnInit {
         };
 
         this.chartDataLines = null;
-        
+
         let lineData:any = await this.statistics.getChartDataLines(this.selectedCharity);
 
         let lineDataXRP:number[] = [];
