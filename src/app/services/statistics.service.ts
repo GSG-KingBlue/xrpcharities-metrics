@@ -9,7 +9,17 @@ export class StatisticsService {
     async calculateBalances(charity:any): Promise<any[]> {
         try {
             let tipbotFeed = await this.api.callTipBotPublicPage(charity.handle);
-            let xrpDeposited = await this.api.getAggregatedXRP("user_id="+charity.id+"&type=deposit");
+            let xrpDeposited = 0;
+
+            if(charity.startDate) {
+                let xrpReceived = await this.api.getAggregatedXRP("to_id="+charity.id+"&type=tip&from_date="+charity.startDate);
+                tipbotFeed.stats.tips.received.amount = xrpReceived;
+
+                xrpDeposited = await this.api.getAggregatedXRP("user_id="+charity.id+"&type=deposit&from_date="+charity.startDate);
+            } else {
+                xrpDeposited = await this.api.getAggregatedXRP("user_id="+charity.id+"&type=deposit");
+            }
+
             let stats = tipbotFeed.stats;
             let xrpRaised = 0;
             let currentBalance = 0;
@@ -33,7 +43,81 @@ export class StatisticsService {
         }
     }
 
-    async getChartData(days:number, multiplier: number,
+    async getChartDataLines(charity: any): Promise<any> {
+
+        let promiseAll:any[] = [];
+        promiseAll.push(await this.api.callTipBotStdFeedApi("type=tip&to_id="+charity.id+(charity.startDate? '&from_date='+charity.startDate : '')));
+        promiseAll.push(await this.api.callTipBotStdFeedApi("type=deposit&user_id="+charity.id+(charity.startDate? '&from_date='+charity.startDate : '')));
+
+        await Promise.all(promiseAll);
+
+        let receivedTips:any[] = promiseAll[0];
+        let receivedDeposits:any[] = promiseAll[1];
+
+        //console.log(JSON.stringify(receivedDeposits));
+
+        let allTransactions = receivedTips.concat(receivedDeposits);
+        allTransactions.sort((a,b) => {
+            let dateA:Date = new Date(a.momentAsDate);
+            let dateB:Date = new Date(b.momentAsDate);
+
+            if(dateA < dateB)
+                return 1
+            else return -1;
+        });
+
+        let result = this.checkTransactions({overall:0}, allTransactions);
+
+        return result;
+    }
+
+    checkTransactions(result:any, receivedTransactions:any[]): any {
+
+        let earliestTip = receivedTransactions[receivedTransactions.length-1];
+
+        let currentMonth;
+        let currentYear;
+        if(earliestTip) {
+            let ealiestTipDate = new Date(earliestTip.momentAsDate);
+            currentMonth = ealiestTipDate.getUTCMonth();
+            currentYear = ealiestTipDate.getUTCFullYear();
+        }
+
+        if(receivedTransactions.length>0) {
+            for(let i = receivedTransactions.length-1; i >=0;i--) {
+                let tipDate = new Date(receivedTransactions[i].momentAsDate);
+                let tipMonth = tipDate.getUTCMonth();
+                let tipYear = tipDate.getUTCFullYear();
+
+                if(tipMonth == currentMonth && tipYear == currentYear) {
+                    if(!result[currentYear])
+                        result[currentYear] = {};
+
+                    if(!result[currentYear][currentMonth])
+                        result[currentYear][currentMonth] = result.overall;
+                        
+                    result[currentYear][currentMonth]+= receivedTransactions[i].xrp*1000000;
+                } else {
+
+                    if(!result.overall)
+                        result.overall = 0;
+                    
+                    result.overall = result[currentYear][currentMonth];
+                    result[currentYear][currentMonth] = result[currentYear][currentMonth] / 1000000;
+
+                    currentMonth = tipMonth;
+                    currentYear = tipYear;
+                }
+            }
+
+            if(result[currentYear][currentMonth] && result[currentYear][currentMonth] > 0)
+                result[currentYear][currentMonth] = result[currentYear][currentMonth] / 1000000;
+        }
+
+        return result;
+    }
+
+    async getChartDataBars(days:number, multiplier: number,
         getSentTips:boolean,
         getSentXRP:boolean,
         getReceivedTips:boolean,

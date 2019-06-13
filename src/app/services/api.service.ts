@@ -6,19 +6,35 @@ export class ApiService {
     constructor(private app: AppService) {}
 
     async callTipBotFeedApi(queryParams: string): Promise<any[]> {
-        let receivedTips: any[]
+        let tips: any[]
 
         try {
             //console.log("calling API: " + "https://xrptipbot-api.siedentopf.xyz/feed?"+queryParams)
             let tipbotFeed = await this.app.get("https://xrptipbot-api.siedentopf.xyz/feed?"+queryParams);
             //console.log("feed length: " + tipbotFeed.feed.length);
-            receivedTips = tipbotFeed.feed;
+            tips = tipbotFeed.feed;
         } catch(err) {
             console.log(JSON.stringify(err))
-            receivedTips = [];
+            tips = [];
         }
 
-        return receivedTips;
+        return tips;
+    }
+
+    async callTipBotStdFeedApi(queryParams: string): Promise<any[]> {
+        let tips: any[]
+
+        try {
+            //console.log("calling API: " + "https://xrptipbot-api.siedentopf.xyz/feed?"+queryParams)
+            let tipbotFeed = await this.app.get("https://xrptipbot-api.siedentopf.xyz/std-feed?"+queryParams);
+            //console.log("feed length: " + tipbotFeed.feed.length);
+            tips = tipbotFeed.feed;
+        } catch(err) {
+            console.log(JSON.stringify(err))
+            tips = [];
+        }
+
+        return tips;
     }
 
     async getCount(queryParams: string): Promise<number> {

@@ -5,6 +5,7 @@ interface Charity {
   handle: string,
   id: string,
   addInfo: string,
+  startDate?: string
   balance: number,
   overallReceived: number,
   isProcessing: boolean,
@@ -22,10 +23,10 @@ export class MainComponent implements OnInit {
   stjude:Charity = {handle: 'StJude', balance: 0, id:'9624042', addInfo:'', overallReceived: 0, isProcessing: true, isInternalProcessing: false}
   wanderingware:Charity = {handle: 'WanderingWare', id:'3443786712', addInfo:'', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
   cranders71:Charity = {handle: 'cranders71', id:'970803226470531072', addInfo:'', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
-  bigbuckor:Charity = {handle: 'bigbuckor', id:'951179206104403968', addInfo:'', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
+  bigbuckor:Charity = {handle: 'bigbuckor', id:'951179206104403968', addInfo:'', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false, startDate: '2018-10-15'}
   onemorehome:Charity = {handle: 'onemorehome', id:'1080843472129658880', addInfo:'', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
   cote_uk:Charity = {handle: 'cote_uk', id:'21855719', addInfo:'', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
-  goodxrp:Charity = {handle: 'GoodXrp', id:'1059563470952247296', addInfo:' (tip splitter bot)', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false}
+  goodxrp:Charity = {handle: 'GoodXrp', id:'1059563470952247296', addInfo:' (tip splitter bot)', balance: 0, overallReceived: 0, isProcessing: true, isInternalProcessing: false, startDate: '2019-03-19'}
 
   charities:Charity[] = [this.goodxrp,this.stjude,this.wanderingware,this.cranders71,this.bigbuckor,this.onemorehome,this.cote_uk,this.xrpcharities]
 

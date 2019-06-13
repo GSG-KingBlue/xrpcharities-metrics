@@ -3,8 +3,9 @@ import { StatisticsService } from '../services/statistics.service';
 import { ChartModule } from 'primeng/chart';
 
 interface Charity {
-    label: string;
-    value: string;
+    handle: string;
+    id: string;
+    startDate?: string;
   }
 
 @Component({
@@ -13,30 +14,36 @@ interface Charity {
 })
 export class DashboardComponent implements OnInit {
 
-    @ViewChild ('barChart') chart: ChartModule;
+    @ViewChild ('barChart') barChart: ChartModule;
 
-    chartData: any;
-    options:any;
+    @ViewChild ('linesChart') linesChart: ChartModule;
+
+    chartDataBars: any;
+    chartDataLines: any;
+    optionsBars:any;
+    optionsLines:any;
     daysToReceive = 10;
     selectedDayOrWeek: number;
     daysOrWeeksDropDown;
     selectedCharity: Charity;
     availableCharities: Charity[];
     includeDeposits: boolean = false;
-    processing = false;
+    processingBars = false;
+    processingLines = false;
+    processingAll = false;
 
     executionTimeout;
 
     constructor(public statistics: StatisticsService) {
         let currentDate = new Date();
         this.availableCharities = [
-            {label:'GoodXrp', value:'1059563470952247296'},
-            {label:'StJude', value:'9624042'},
-            {label:'WanderingWare', value:'3443786712'},
-            {label:'cranders71', value:'970803226470531072'},
-            {label:'bigbuckor', value:'951179206104403968'},
-            {label:'onemorehome', value:'1080843472129658880'},
-            {label:'cote_uk', value:'21855719'},
+            {handle:'GoodXrp', id:'1059563470952247296', startDate: '2019-03-19'},
+            {handle:'StJude', id:'9624042'},
+            {handle:'WanderingWare', id:'3443786712'},
+            {handle:'cranders71', id:'970803226470531072'},
+            {handle:'bigbuckor', id:'951179206104403968', startDate: '2018-10-15'},
+            {handle:'onemorehome', id:'1080843472129658880'},
+            {handle:'cote_uk', id:'21855719'},
         ]
         this.selectedCharity = this.availableCharities[0];
 
@@ -47,29 +54,40 @@ export class DashboardComponent implements OnInit {
 
         this.selectedDayOrWeek = this.daysOrWeeksDropDown[0].value;
 
-        this.chartData = {
-        labels: [],
-        datasets: [
-            {
-                label: 'Received XRP',
-                data: [0,0,0,0,0,0,0,0,0,0,100]
-            },
-            {
-                label: 'Received Tips',
-                data: [0,0,0,0,0,0,0,0,0,0,100]
-            },
-            ]
+        this.chartDataBars = {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Received XRP',
+                    data: [0,0,0,0,0,0,0,0,0,0,100]
+                },
+                {
+                    label: 'Received Tips',
+                    data: [0,0,0,0,0,0,0,0,0,0,100]
+                },
+                ]
         }
 
         for(let i=9;i>=0;i--) {
             currentDate.setDate(new Date().getDate()-(i*this.selectedDayOrWeek));
-            this.chartData.labels.push(currentDate.toLocaleDateString());
+            this.chartDataBars.labels.push(currentDate.toLocaleDateString());
         }
 
-        this.options = {
+        this.optionsBars = {
             title: {
                 display: true,
-                text: 'Statistics for last 10 Days',
+                text: 'Statistics of ' + this.selectedCharity.handle + ' for last ' + this.daysToReceive + (this.selectedDayOrWeek===1 ? ' Days' : ' Weeks'),
+                fontSize: 16
+            },
+            legend: {
+                position: 'top'
+            }
+        };
+
+        this.optionsLines = {
+            title: {
+                display: true,
+                text: 'Loading... ',
                 fontSize: 16
             },
             legend: {
@@ -79,24 +97,112 @@ export class DashboardComponent implements OnInit {
     }
 
     async ngOnInit() {
-        this.refresh();
+        this.refreshAll();
     }
 
     refreshSpinner() {
         if(Number.isInteger(this.daysToReceive)) {
-            console.log("spinner: " + this.daysToReceive)
             if(this.executionTimeout) clearTimeout(this.executionTimeout);
             
-            this.executionTimeout = setTimeout(()=> this.refresh(),500);
+            this.executionTimeout = setTimeout(()=> this.refreshBarChart(),500);
         }
     }
 
-    async refresh() {
-        this.processing=true;
-        console.log("include deposits? " + this.includeDeposits);
-        console.log("selectedCharity: " + JSON.stringify(this.selectedCharity));
+    refreshAll() {
+        this.processingAll = true;
+        
+        this.refreshBarChart();
+        this.refreshLineChart();
+
+        this.processingAll = false;
+    }
+
+    async refreshLineChart() {
+        this.processingLines = true;
+        
+        this.optionsLines = {
+            title: {
+                display: true,
+                text: 'Loading... ',
+                fontSize: 16
+            },
+            legend: {
+                position: 'top'
+            }
+        };
+
+        this.chartDataLines = null;
+        
+        let lineData:any = await this.statistics.getChartDataLines(this.selectedCharity);
+
+        let lineDataXRP:number[] = [];
+        let lineDataTime:string[] = [];
+
+        let isStart = true;
+        for(let keyYear in lineData) {
+            let firstMonth = true;
+            if(lineData.hasOwnProperty(keyYear) && keyYear != "overall") {
+                for(let keyMonth in lineData[keyYear]) {
+                    if(lineData[keyYear].hasOwnProperty(keyMonth)) {
+                        if(isStart) {
+                            lineDataXRP.push(0)
+                            if(this.selectedCharity.startDate)
+                                lineDataTime.push(this.selectedCharity.startDate);
+                            else
+                                lineDataTime.push(this.resolveMonth(keyMonth) + " " + keyYear);
+
+                            isStart = false;
+                            firstMonth = false;
+                        } else if(firstMonth) {
+                            lineDataTime.push(this.resolveMonth(keyMonth) + " " + keyYear);
+                            firstMonth = false;
+                        } else {
+                            lineDataTime.push(this.resolveMonth(keyMonth));
+                        }
+
+                        lineDataXRP.push(lineData[keyYear][keyMonth])
+                    }
+                }
+            }
+        }
+
+        let raised = await this.statistics.calculateBalances(this.selectedCharity);
+        lineDataXRP[lineDataXRP.length-1] = raised[1];
+
+        lineDataTime.push("Now");
+
+        this.chartDataLines = {
+            labels: lineDataTime,
+            datasets: [
+                {
+                    label: 'Received XRP',
+                    data: lineDataXRP,
+                    fill: true,
+                    borderColor: '#1E88E5'
+                }
+            ]
+        }
+
+        this.optionsLines = {
+            title: {
+                display: true,
+                text: 'Overall received XRP for ' + this.selectedCharity.handle,
+                fontSize: 16
+            },
+            legend: {
+                position: 'top'
+            }
+        };
+
+        this.processingLines = false;
+    }
+
+    async refreshBarChart() {
+        this.processingBars=true;
         //console.log("DropDownSelection: " + this.selectedDayOrWeek);
-        let result:any = await this.statistics.getChartData(this.daysToReceive, this.selectedDayOrWeek, false, false, true, true, this.includeDeposits, this.includeDeposits, this.selectedCharity.value);
+
+        let result:any = await this.statistics.getChartDataBars(this.daysToReceive, this.selectedDayOrWeek, false, false, true, true, this.includeDeposits, this.includeDeposits, this.selectedCharity.id);
+
 
         if(this.includeDeposits) {
             for(let i = 0;i<result.receivedTips.length;i++)
@@ -126,28 +232,28 @@ export class DashboardComponent implements OnInit {
                 labelsX.push(from.getUTCDate()+"."+(from.getUTCMonth()+1)+"."+from.getUTCFullYear() + " - \n" + to.getUTCDate()+"."+(to.getUTCMonth()+1)+"."+to.getUTCFullYear());
         })
     
-        this.chartData = {
-          labels: labelsX,
-          datasets: [
-              {
-                  label: 'Received XRP',
-                  data: dataSet[0],
-                  backgroundColor: '#42A5F5',
-                  borderColor: '#1E88E5',
-              },
-              {
-                label: 'Received Tips',
-                data: dataSet[1],
-                backgroundColor: '#9CCC65',
-                borderColor: '#7CB342',
-              },
-            ]
+        this.chartDataBars = {
+            labels: labelsX,
+            datasets: [
+                {
+                    label: 'Received XRP',
+                    data: dataSet[0],
+                    backgroundColor: '#42A5F5',
+                    borderColor: '#1E88E5',
+                },
+                {
+                    label: 'Received Tips',
+                    data: dataSet[1],
+                    backgroundColor: '#9CCC65',
+                    borderColor: '#7CB342',
+                },
+                ]
         }
 
-        this.options = {
+        this.optionsBars = {
             title: {
                 display: true,
-                text: 'Statistics of ' + this.selectedCharity.label + ' for last ' + (dataSet[2].length) + (this.selectedDayOrWeek===1 ? ' Days' : ' Weeks'),
+                text: 'Statistics of ' + this.selectedCharity.handle + ' for last ' + (dataSet[2].length) + (this.selectedDayOrWeek===1 ? ' Days' : ' Weeks'),
                 fontSize: 16
             },
             legend: {
@@ -155,6 +261,23 @@ export class DashboardComponent implements OnInit {
             }
         };
 
-        this.processing=false;
+        this.processingBars=false;
+    }
+
+    resolveMonth(month:any) {
+        switch(month) {
+            case "0": return "January";
+            case "1": return "February";
+            case "2": return "March";
+            case "3": return "April";
+            case "4": return "May";
+            case "5": return "June";
+            case "6": return "July";
+            case "7": return "August";
+            case "8": return "September";
+            case "9": return "October";
+            case "10": return "November";
+            case "11": return "December";
+        }
     }
 }
