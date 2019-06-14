@@ -152,7 +152,7 @@ export class DashboardComponent implements OnInit {
         let isStart = true;
         for(let keyYear in lineData) {
             let firstMonth = true;
-            if(lineData.hasOwnProperty(keyYear) && keyYear != "overall") {
+            if(lineData.hasOwnProperty(keyYear) && keyYear != "overall" && keyYear != "earliestTip") {
                 for(let keyMonth in lineData[keyYear]) {
                     if(lineData[keyYear].hasOwnProperty(keyMonth)) {
                         if(isStart) {
@@ -160,7 +160,7 @@ export class DashboardComponent implements OnInit {
                             if(this.selectedCharity.startDate)
                                 lineDataTime.push(this.selectedCharity.startDate);
                             else
-                                lineDataTime.push(this.resolveMonth(keyMonth) + " " + keyYear);
+                                lineDataTime.push(lineData.earliestTip);
 
                             isStart = false;
                             firstMonth = false;

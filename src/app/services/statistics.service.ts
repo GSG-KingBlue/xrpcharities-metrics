@@ -46,10 +46,10 @@ export class StatisticsService {
     async getChartDataLines(charity: any): Promise<any> {
 
         let promiseAll:any[] = [];
-        promiseAll.push(await this.api.callTipBotStdFeedApi("type=tip&to_id="+charity.id+(charity.startDate? '&from_date='+charity.startDate : '')));
-        promiseAll.push(await this.api.callTipBotStdFeedApi("type=deposit&user_id="+charity.id+(charity.startDate? '&from_date='+charity.startDate : '')));
+        promiseAll.push(this.api.callTipBotStdFeedApi("type=tip&to_id="+charity.id+(charity.startDate? '&from_date='+charity.startDate : '')));
+        promiseAll.push(this.api.callTipBotStdFeedApi("type=deposit&user_id="+charity.id+(charity.startDate? '&from_date='+charity.startDate : '')));
 
-        await Promise.all(promiseAll);
+        promiseAll = await Promise.all(promiseAll);
 
         let receivedTips:any[] = promiseAll[0];
         let receivedDeposits:any[] = promiseAll[1];
@@ -78,9 +78,10 @@ export class StatisticsService {
         let currentMonth;
         let currentYear;
         if(earliestTip) {
-            let ealiestTipDate = new Date(earliestTip.momentAsDate);
-            currentMonth = ealiestTipDate.getUTCMonth();
-            currentYear = ealiestTipDate.getUTCFullYear();
+            let earliestTipDate:Date = new Date(earliestTip.momentAsDate);
+            currentMonth = earliestTipDate.getUTCMonth();
+            currentYear = earliestTipDate.getUTCFullYear();
+            result.earliestTip = earliestTipDate.toLocaleDateString();
         }
 
         if(receivedTransactions.length>0) {
