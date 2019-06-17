@@ -25,19 +25,19 @@ export class StatisticsService {
             let currentBalance = 0;
             //exclude @xrpcharities bot from the list but keep the amount which was raised until it got abandoned.
             if(charity.id == '1082115799840632832') {
-                xrpRaised = 4410.100723
+                xrpRaised = 4410.100723*1000000
             }
             //normal calculation for all other charities and bots
             else {
-                xrpRaised = (stats.tips.received.amount*1000000 + xrpDeposited*1000000 + stats.donations.ilpDeposits.amount*1000000)/1000000;
+                xrpRaised = (stats.tips.received.amount*1000000 + xrpDeposited*1000000 + stats.donations.ilpDeposits.amount*1000000);
                 //deduct 1089.75 XRP from bigbuckor -> these are donations regarding his blog before he started the charity
                 if(charity.id==='951179206104403968')
-                    xrpRaised = xrpRaised-1089.75;
+                    xrpRaised = xrpRaised-(1089.75*1000000);
 
                 currentBalance = tipbotFeed.stats.balance.amount;
             }
 
-            return [tipbotFeed.stats.balance.amount,currentBalance > xrpRaised ? currentBalance : xrpRaised];
+            return [tipbotFeed.stats.balance.amount,currentBalance > xrpRaised ? currentBalance : (xrpRaised/1000000)];
         } catch {
             return [0,0];
         }

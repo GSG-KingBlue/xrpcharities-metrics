@@ -197,7 +197,7 @@ export class DashboardComponent implements OnInit {
         this.optionsLines = {
             title: {
                 display: true,
-                text: 'Overall received XRP for ' + this.selectedCharity.handle,
+                text: 'Overall XRP raised for ' + this.selectedCharity.handle,
                 fontSize: 16
             },
             legend: {
