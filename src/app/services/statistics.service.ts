@@ -37,7 +37,7 @@ export class StatisticsService {
                 currentBalance = tipbotFeed.stats.balance.amount;
             }
 
-            return [tipbotFeed.stats.balance.amount,currentBalance > xrpRaised ? currentBalance : (xrpRaised/1000000)];
+            return [tipbotFeed.stats.balance.amount,currentBalance*1000000 > xrpRaised ? currentBalance : (xrpRaised/1000000)];
         } catch {
             return [0,0];
         }
