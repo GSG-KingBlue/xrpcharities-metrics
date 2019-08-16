@@ -52,6 +52,7 @@ import { DashboardComponent } from './components/dashboard';
 
 //my components
 import {MainComponent} from './pages/main';
+import {LatestDonorsComponent} from './pages/latestDonors';
 import {StatisticsComponent} from './pages/statistics';
 import {AboutUsComponent} from './pages/aboutus';
 import {WhatWeDoComponent} from './pages/whatwedo';
@@ -69,6 +70,7 @@ import { StatisticsService } from './services/statistics.service';
     AppFooterComponent,
     DashboardComponent,
     MainComponent,
+    LatestDonorsComponent,
     StatisticsComponent,
     AboutUsComponent,
     WhatWeDoComponent,

@@ -90,7 +90,7 @@ export class MainComponent implements OnInit {
       //set interval
       this.interval = setInterval(async () => {
         this.getBalances();
-      },10000);
+      },60000);
     }
     else {
       if(this.interval)

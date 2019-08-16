@@ -1,0 +1,39 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+        <p-card header="Latest donors">
+            <p-table [value]="latestDonors" [autoLayout]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Date</th>
+                        <th>XRP</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Context</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-latestDonors>
+                    <tr style="white-space: nowrap;">
+                        <!-- twitter link -->
+                        <td>{{latestDonors['moment']}}</td>
+                        <td>{{latestDonors['xrp']}}</td>
+                        <td>
+                            {{latestDonors['user']}}
+                            <a *ngIf="!isDiscordOrCoilNetwork(latestDonors.user_network)" target="_blank" href="{{getNetworkURLFrom(latestDonors)}}"><img src="../../assets/networks/{{resolveIconName(latestDonors.user_network)}}.png" width="20" height="20" style="vertical-align: middle;"></a>
+                            <img *ngIf="isDiscordOrCoilNetwork(latestDonors.user_network)" src="../../assets/networks/{{resolveIconName(latestDonors.user_network)}}.png" width="20" height="20" style="vertical-align: middle;">
+                        </td>
+                        <td>
+                            {{latestDonors['to']}}
+                            <a *ngIf="!isDiscordOrCoilNetwork(latestDonors.to_network)" target="_blank" href="{{getNetworkURLTo(latestDonors)}}"><img src="../../assets/networks/{{resolveIconName(latestDonors.to_network)}}.png" width="20" height="20" style="vertical-align: middle;"></a>
+                            <img *ngIf="isDiscordOrCoilNetwork(latestDonors.to_network)" src="../../assets/networks/{{resolveIconName(latestDonors.to_network)}}.png" width="20" height="20" style="vertical-align: middle;">
+                        </td>
+                        <!--Context-->
+                        <td *ngIf="(latestDonors.network != 'twitter' && latestDonors.network != 'reddit' && latestDonors.network != 'btn') || latestDonors.type != 'tip'" style="text-align: center">{{shortenContext(latestDonors.network,latestDonors.context)}}</td>
+                        <td *ngIf="latestDonors.network === 'btn' && latestDonors.type === 'tip'" style="text-align: center"><a target="_blank" href="{{shortenContext(latestDonors.network,latestDonors.context)}}">{{shortenContext(latestDonors.network,latestDonors.context)}}</a></td>
+                        <td *ngIf="latestDonors.network === 'twitter' && latestDonors.type === 'tip'" style="text-align: center"><a target="_blank" href="https://twitter.com{{latestDonors.context}}">{{latestDonors.context}}</a></td>
+                        <td *ngIf="latestDonors.network === 'reddit' && latestDonors.type === 'tip'" style="text-align: center"><a target="_blank" href="https://reddit.com{{latestDonors.context}}">{{latestDonors.context}}</a></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-card>
+    </div>
+</div>

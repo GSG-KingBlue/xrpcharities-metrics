@@ -253,4 +253,34 @@ export class StatisticsService {
 
         return dateToModify;
     }
+
+    async getLatestDonors(): Promise<any[]> {
+        let promises:any[] = [];
+        promises.push(this.api.callTipBotStdFeedApi('to=GoodXrp&to_network=twitter&type=tip&limit=100'));
+        promises.push(this.api.callTipBotStdFeedApi('to=StJude&to_network=twitter&type=tip&excludeUser=["1059563470952247296"]&limit=100'));
+        promises.push(this.api.callTipBotStdFeedApi('to=WanderingWare&to_network=twitter&type=tip&excludeUser=["1059563470952247296"]&limit=100'));
+        promises.push(this.api.callTipBotStdFeedApi('to=cranders71&to_network=twitter&type=tip&excludeUser=["1059563470952247296"]&limit=100'));
+        promises.push(this.api.callTipBotStdFeedApi('to=bigbuckor&to_network=twitter&type=tip&excludeUser=["1059563470952247296"]&limit=100'));
+        promises.push(this.api.callTipBotStdFeedApi('to=onemorehome&to_network=twitter&type=tip&excludeUser=["1059563470952247296"]&limit=100'));
+        promises.push(this.api.callTipBotStdFeedApi('to=cote_uk&to_network=twitter&type=tip&excludeUser=["1059563470952247296"]&limit=100'));
+
+        let latestTips:any[] = await Promise.all(promises);
+
+        let allTips:any[] = [];
+        latestTips.forEach(tips => {
+            allTips = allTips.concat(tips)
+        });
+
+        allTips.sort((a,b) => {
+            let dateA:Date = new Date(a.moment);
+            let dateB:Date = new Date(b.moment);
+
+            if(dateA > dateB)
+                return -1;
+            else
+                return 1;
+        });
+
+        return allTips.slice(0,100);
+    }
 }
