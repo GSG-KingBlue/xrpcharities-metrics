@@ -14,7 +14,7 @@
                 <ng-template pTemplate="body" let-latestDonors>
                     <tr style="white-space: nowrap;">
                         <!-- twitter link -->
-                        <td>{{latestDonors['moment']}}</td>
+                        <td>{{formatDate(latestDonors['momentAsDate'])}}</td>
                         <td>{{latestDonors['xrp']}}</td>
                         <td>
                             {{latestDonors['user']}}

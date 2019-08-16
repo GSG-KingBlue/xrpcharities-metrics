@@ -12,8 +12,12 @@ export class LatestDonorsComponent implements OnInit {
 
     constructor(public statistics: StatisticsService) {}
     
-    async ngOnInit() {
+    ngOnInit() {
         this.getLatestDonors();
+
+        setInterval(async () => {
+            this.getLatestDonors();
+        }, 60000);
     }
 
     async getLatestDonors() {
@@ -69,5 +73,10 @@ export class LatestDonorsComponent implements OnInit {
         else if('btn' === network)
             return 'touch_app';
         else return '';
+    }
+
+    formatDate(date:string) {
+        let moment:Date = new Date(new Date(date).toUTCString() + '+0200');
+        return moment.toLocaleString(Intl.DateTimeFormat().resolvedOptions().locale, {timeZone: 'Europe/Berlin'} );
     }
 }
