@@ -4,10 +4,10 @@
             <p-table [value]="latestDonors" [autoLayout]="true">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Date</th>
-                        <th>XRP</th>
-                        <th>From</th>
-                        <th>To</th>
+                        <th [pSortableColumn]="'momentAsDate'">Date (GMT+2)<p-sortIcon [field]="'momentAsDate'"></p-sortIcon></th>
+                        <th [pSortableColumn]="'xrp'">XRP<p-sortIcon [field]="'xrp'"></p-sortIcon></th>
+                        <th [pSortableColumn]="'user'">From<p-sortIcon [field]="'user'"></p-sortIcon></th>
+                        <th [pSortableColumn]="'to'">To<p-sortIcon [field]="'to'"></p-sortIcon></th>
                         <th>Context</th>
                     </tr>
                 </ng-template>
