@@ -14,8 +14,8 @@
                 <ng-template pTemplate="body" let-latestDonors>
                     <tr style="white-space: nowrap;">
                         <!-- twitter link -->
-                        <td>{{formatDate(latestDonors['momentAsDate'])}}</td>
-                        <td>{{latestDonors['xrp']}}</td>
+                        <td style="text-align: center">{{formatDate(latestDonors['momentAsDate'])}}</td>
+                        <td style="text-align: center">{{latestDonors['xrp']}}</td>
                         <td>
                             {{latestDonors['user']}}
                             <a *ngIf="!isDiscordOrCoilNetwork(latestDonors.user_network)" target="_blank" href="{{getNetworkURLFrom(latestDonors)}}"><img src="../../assets/networks/{{resolveIconName(latestDonors.user_network)}}.png" width="20" height="20" style="vertical-align: middle;"></a>
