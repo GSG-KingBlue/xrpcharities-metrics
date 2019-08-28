@@ -9,8 +9,8 @@ export class ApiService {
         let tips: any[]
 
         try {
-            //console.log("calling API: " + "https://xrptipbot-api.siedentopf.xyz/feed?"+queryParams)
-            let tipbotFeed = await this.app.get("https://xrptipbot-api.siedentopf.xyz/feed?"+queryParams);
+            //console.log("calling API: " + "https://api.xrptipbot-stats.com/feed?"+queryParams)
+            let tipbotFeed = await this.app.get("https://api.xrptipbot-stats.com/feed?"+queryParams);
             //console.log("feed length: " + tipbotFeed.feed.length);
             tips = tipbotFeed.feed;
         } catch(err) {
@@ -25,8 +25,8 @@ export class ApiService {
         let tips: any[]
 
         try {
-            //console.log("calling API: " + "https://xrptipbot-api.siedentopf.xyz/feed?"+queryParams)
-            let tipbotFeed = await this.app.get("https://xrptipbot-api.siedentopf.xyz/std-feed?"+queryParams);
+            //console.log("calling API: " + "https://api.xrptipbot-stats.com/feed?"+queryParams)
+            let tipbotFeed = await this.app.get("https://api.xrptipbot-stats.com/std-feed?"+queryParams);
             //console.log("feed length: " + tipbotFeed.feed.length);
             tips = tipbotFeed.feed;
         } catch(err) {
@@ -53,8 +53,8 @@ export class ApiService {
 
     private async callTipBotCountApi(path: string, queryParams: string): Promise<any> {
         try {
-            //console.log("calling API: " + "https://xrptipbot-api.siedentopf.xyz/count"+path+"?"+queryParams)
-            return this.app.get("https://xrptipbot-api.siedentopf.xyz/count"+path+"?"+queryParams);
+            //console.log("calling API: " + "https://api.xrptipbot-stats.com/count"+path+"?"+queryParams)
+            return this.app.get("https://api.xrptipbot-stats.com/count"+path+"?"+queryParams);
         } catch(err) {
             console.log(JSON.stringify(err))
             return null;
@@ -77,8 +77,8 @@ export class ApiService {
 
     private async callTipBotAggregateApi(path:string, queryParams: string): Promise<any> {
         try {
-            //console.log("calling API: " + "https://xrptipbot-api.siedentopf.xyz/aggregate"+path+"?"+queryParams)
-            return this.app.get("https://xrptipbot-api.siedentopf.xyz/aggregate"+path+"?"+queryParams);
+            //console.log("calling API: " + "https://api.xrptipbot-stats.com/aggregate"+path+"?"+queryParams)
+            return this.app.get("https://api.xrptipbot-stats.com/aggregate"+path+"?"+queryParams);
         } catch(err) {
             console.log(JSON.stringify(err))
             return null;
