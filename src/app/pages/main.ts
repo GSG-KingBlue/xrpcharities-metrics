@@ -30,9 +30,9 @@ export class MainComponent implements OnInit {
 
   charities:Charity[] = [this.goodxrp,this.stjude,this.wanderingware,this.cranders71,this.bigbuckor,this.onemorehome,this.cote_uk,this.xrpcharities]
 
-  allCharitiesReceived:string="0";
+  allCharitiesReceived:number=0;
   allCharitiesReceivedTmp:number=0;
-  allCharitiesBalance:string="0";
+  allCharitiesBalance:number=0;
   allCharitiesBalanceTmp:number=0;
   interval: any;
   toogleChecked: boolean = true;
@@ -74,13 +74,13 @@ export class MainComponent implements OnInit {
         //do not count donations to xrpcharities & GoodXrp into total balance because these would be double counted then.
         //xrpcharities & GoodXrp is forwarding all tips/donations to the other charities
         if(this.charities[i].id != '1082115799840632832' && this.charities[i].id != '1059563470952247296') {
-          this.allCharitiesReceivedTmp = (this.allCharitiesReceivedTmp*1000000 + this.charities[i].overallReceived*1000000)/1000000;
-          this.allCharitiesBalanceTmp = (this.allCharitiesBalanceTmp*1000000 + this.charities[i].balance*1000000)/1000000;
+          this.allCharitiesReceivedTmp = (this.allCharitiesReceivedTmp + this.charities[i].overallReceived*1000000);
+          this.allCharitiesBalanceTmp = (this.allCharitiesBalanceTmp + this.charities[i].balance*1000000);
         }
       }
 
-      this.allCharitiesBalance = this.allCharitiesBalanceTmp.toFixed(6);
-      this.allCharitiesReceived = this.allCharitiesReceivedTmp.toFixed(6);
+      this.allCharitiesBalance = this.allCharitiesBalanceTmp/1000000;
+      this.allCharitiesReceived = this.allCharitiesReceivedTmp/1000000;
       this.updatingTotals = false;
     }
   }
