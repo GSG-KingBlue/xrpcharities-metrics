@@ -30,9 +30,9 @@ export class MainComponent implements OnInit {
 
   charities:Charity[] = [this.goodxrp,this.stjude,this.wanderingware,this.cranders71,this.bigbuckor,this.onemorehome,this.cote_uk,this.xrpcharities]
 
-  allCharitiesReceived:number=0;
+  allCharitiesReceived:string="0";
   allCharitiesReceivedTmp:number=0;
-  allCharitiesBalance:number=0;
+  allCharitiesBalance:string="0";
   allCharitiesBalanceTmp:number=0;
   interval: any;
   toogleChecked: boolean = true;
@@ -79,8 +79,8 @@ export class MainComponent implements OnInit {
         }
       }
 
-      this.allCharitiesBalance = this.allCharitiesBalanceTmp;
-      this.allCharitiesReceived = this.allCharitiesReceivedTmp;
+      this.allCharitiesBalance = this.allCharitiesBalanceTmp.toFixed(6);
+      this.allCharitiesReceived = this.allCharitiesReceivedTmp.toFixed(6);
       this.updatingTotals = false;
     }
   }
