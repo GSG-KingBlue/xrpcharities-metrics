@@ -17,12 +17,12 @@
                         <td style="text-align: center">{{formatDate(latestDonors['momentAsDate'])}}</td>
                         <td style="text-align: center">{{latestDonors['xrp']}}</td>
                         <td>
-                            {{latestDonors['user']}}
+                            <a target="_blank" href="https://xrptipbot-stats.com/userstatistics?user={{latestDonors['user']}}&network={{latestDonors['user_network']}}">{{latestDonors['user']}} </a>
                             <a *ngIf="!isDiscordOrCoilNetwork(latestDonors.user_network)" target="_blank" href="{{getNetworkURLFrom(latestDonors)}}"><img src="../../assets/networks/{{resolveIconName(latestDonors.user_network)}}.png" width="20" height="20" style="vertical-align: middle;"></a>
                             <img *ngIf="isDiscordOrCoilNetwork(latestDonors.user_network)" src="../../assets/networks/{{resolveIconName(latestDonors.user_network)}}.png" width="20" height="20" style="vertical-align: middle;">
                         </td>
                         <td>
-                            {{latestDonors['to']}}
+                            <a target="_blank" href="https://xrptipbot-stats.com/userstatistics?user={{latestDonors['to']}}&network={{latestDonors['to_network']}}">{{latestDonors['to']}} </a>
                             <a *ngIf="!isDiscordOrCoilNetwork(latestDonors.to_network)" target="_blank" href="{{getNetworkURLTo(latestDonors)}}"><img src="../../assets/networks/{{resolveIconName(latestDonors.to_network)}}.png" width="20" height="20" style="vertical-align: middle;"></a>
                             <img *ngIf="isDiscordOrCoilNetwork(latestDonors.to_network)" src="../../assets/networks/{{resolveIconName(latestDonors.to_network)}}.png" width="20" height="20" style="vertical-align: middle;">
                         </td>
