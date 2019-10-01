@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service'
+import { ApiService } from './api.service';
+import * as formatUtil from '../util/formattingUtil';
 
 @Injectable()
 export class StatisticsService {
@@ -79,16 +80,16 @@ export class StatisticsService {
         let currentYear;
         if(earliestTip) {
             let earliestTipDate:Date = new Date(earliestTip.momentAsDate);
-            currentMonth = earliestTipDate.getUTCMonth();
-            currentYear = earliestTipDate.getUTCFullYear();
+            currentMonth = earliestTipDate.getMonth();
+            currentYear = earliestTipDate.getFullYear();
             result.earliestTip = earliestTipDate.toLocaleDateString();
         }
 
         if(receivedTransactions.length>0) {
             for(let i = receivedTransactions.length-1; i >=0;i--) {
                 let tipDate = new Date(receivedTransactions[i].momentAsDate);
-                let tipMonth = tipDate.getUTCMonth();
-                let tipYear = tipDate.getUTCFullYear();
+                let tipMonth = tipDate.getMonth();
+                let tipYear = tipDate.getFullYear();
 
                 if(tipMonth == currentMonth && tipYear == currentYear) {
                     if(!result[currentYear])
@@ -144,14 +145,17 @@ export class StatisticsService {
         let directDepositsXRP:any[] = [];
         let dateTimes:any[] = [];
 
-        let upperDate = this.setHigherTime(new Date());
-        let nextLowDate = new Date();
-        let lowestDate = new Date();
+        let upperDate = this.setHigherTime(new Date(formatUtil.initializeDateAsGMT2(new Date())));;
+        let nextLowDate = new Date(formatUtil.initializeDateAsGMT2(new Date()));
+        let lowestDate = new Date(formatUtil.initializeDateAsGMT2(new Date()))
         //next low day should be last monday if we calculate weeks
         let daysToMonday = nextLowDate.getDay()-1;
         if(multiplier==7) {
             nextLowDate.setDate(nextLowDate.getDate() - daysToMonday);
             lowestDate.setDate(lowestDate.getDate() - daysToMonday);
+        } else if(multiplier==31) {
+            nextLowDate.setDate(1);
+            lowestDate.setDate(1);
         }
         
         nextLowDate = this.setZeroTime(nextLowDate);   
@@ -174,13 +178,17 @@ export class StatisticsService {
             if(getDepositsXRP)
                 directDepositsXRP.push(this.getDepositXRP(nextLowDate, upperDate, userId));
 
-            dateTimes.push({from: nextLowDate.toUTCString(), to: upperDate.toUTCString()})
+            dateTimes.push({from: nextLowDate.toString(), to: upperDate.toString()})
 
-            upperDate = new Date(nextLowDate.toUTCString());
+            upperDate = new Date(nextLowDate.toString());
             upperDate.setDate(upperDate.getDate()-1)
             upperDate = this.setHigherTime(upperDate);
 
-            nextLowDate.setDate(nextLowDate.getDate()-multiplier);
+            if(multiplier==31)
+                nextLowDate.setMonth(nextLowDate.getMonth()-1)
+            else
+                nextLowDate.setDate(nextLowDate.getDate()-multiplier);
+
             nextLowDate = this.setZeroTime(nextLowDate);
         }
 
@@ -196,27 +204,27 @@ export class StatisticsService {
     }
 
     async getSentTips(fromDate: Date, toDate:Date, userId?): Promise<any> {
-        return this.api.getCount("type=tip&from_date="+fromDate.toUTCString()+"&to_date="+toDate.toUTCString()+(userId?"&user_id="+userId:""));
+        return this.api.getCount("type=tip&from_date="+formatUtil.dateToStringEuropeForAPI(fromDate)+"&to_date="+formatUtil.dateToStringEuropeForAPI(toDate)+(userId?"&user_id="+userId:""));
     }
 
     async getSentXRP(fromDate: Date, toDate:Date, userId?): Promise<any> {
-        return this.api.getAggregatedXRP("type=tip&from_date="+fromDate.toUTCString()+"&to_date="+toDate.toUTCString()+(userId?"&user_id="+userId:""));
+        return this.api.getAggregatedXRP("type=tip&from_date="+formatUtil.dateToStringEuropeForAPI(fromDate)+"&to_date="+formatUtil.dateToStringEuropeForAPI(toDate)+(userId?"&user_id="+userId:""));
     }
 
     async getReceivedTips(fromDate: Date, toDate:Date, userId?): Promise<any> {
-        return this.api.getCount("type=tip&from_date="+fromDate.toUTCString()+"&to_date="+toDate.toUTCString()+(userId?"&to_id="+userId:""));
+        return this.api.getCount("type=tip&from_date="+formatUtil.dateToStringEuropeForAPI(fromDate)+"&to_date="+formatUtil.dateToStringEuropeForAPI(toDate)+(userId?"&to_id="+userId:""));
     }
 
     async getReceivedXRP(fromDate: Date, toDate:Date, userId?): Promise<any> {
-        return this.api.getAggregatedXRP("type=tip&from_date="+fromDate.toUTCString()+"&to_date="+toDate.toUTCString()+(userId?"&to_id="+userId:""));
+        return this.api.getAggregatedXRP("type=tip&from_date="+formatUtil.dateToStringEuropeForAPI(fromDate)+"&to_date="+formatUtil.dateToStringEuropeForAPI(toDate)+(userId?"&to_id="+userId:""));
     }
 
     async getDepositCount(fromDate: Date, toDate:Date, userId?): Promise<any> {
-        return this.api.getCount("type=deposit&from_date="+fromDate.toUTCString()+"&to_date="+toDate.toUTCString()+(userId?"&user_id="+userId:""));
+        return this.api.getCount("type=deposit&from_date="+formatUtil.dateToStringEuropeForAPI(fromDate)+"&to_date="+formatUtil.dateToStringEuropeForAPI(toDate)+(userId?"&user_id="+userId:""));
     }
 
     async getDepositXRP(fromDate: Date, toDate:Date, userId?): Promise<any> {
-        return this.api.getAggregatedXRP("type=deposit&from_date="+fromDate.toUTCString()+"&to_date="+toDate.toUTCString()+(userId?"&user_id="+userId:""));
+        return this.api.getAggregatedXRP("type=deposit&from_date="+formatUtil.dateToStringEuropeForAPI(fromDate)+"&to_date="+formatUtil.dateToStringEuropeForAPI(toDate)+(userId?"&user_id="+userId:""));
     }
 
     private roundToSixDecimals(array:any[]): any[] {
@@ -227,28 +235,28 @@ export class StatisticsService {
     }
 
     setZeroMilliseconds(dateToModify: Date): Date {
-        dateToModify.setUTCMilliseconds(0);
+        dateToModify.setMilliseconds(0);
         return dateToModify
     }
 
     setHighMilliseconds(dateToModify: Date): Date {
-        dateToModify.setUTCMilliseconds(999);
+        dateToModify.setMilliseconds(999);
         return dateToModify
     }
 
     setZeroTime(dateToModify: Date): Date {
-        dateToModify.setUTCHours(0);
-        dateToModify.setUTCMinutes(0);
-        dateToModify.setUTCSeconds(0);
+        dateToModify.setHours(0);
+        dateToModify.setMinutes(0);
+        dateToModify.setSeconds(0);
         dateToModify = this.setZeroMilliseconds(dateToModify);
 
         return dateToModify;
     }
     
     setHigherTime(dateToModify: Date): Date {
-        dateToModify.setUTCHours(23);
-        dateToModify.setUTCMinutes(59);
-        dateToModify.setUTCSeconds(59);
+        dateToModify.setHours(23);
+        dateToModify.setMinutes(59);
+        dateToModify.setSeconds(59);
         dateToModify = this.setHighMilliseconds(dateToModify);
 
         return dateToModify;

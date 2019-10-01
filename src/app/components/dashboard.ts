@@ -50,7 +50,8 @@ export class DashboardComponent implements OnInit {
 
         this.daysOrWeeksDropDown = [
             {label:'Days', value:1},
-            {label:'Weeks', value:7}
+            {label:'Weeks', value:7},
+            {label: 'Months', value: 31}
         ];
 
         this.selectedDayOrWeek = this.daysOrWeeksDropDown[0].value;
@@ -115,7 +116,7 @@ export class DashboardComponent implements OnInit {
         if(Number.isInteger(this.daysToReceive)) {
             if(this.executionTimeout) clearTimeout(this.executionTimeout);
             
-            this.executionTimeout = setTimeout(()=> this.refreshBarChart(),500);
+            this.executionTimeout = setTimeout(()=> this.refreshBarChart(),1500);
         }
     }
 
@@ -238,9 +239,9 @@ export class DashboardComponent implements OnInit {
             let to = new Date(jsonDate.to);
 
             if(this.selectedDayOrWeek==1)
-                labelsX.push(to.getUTCDate()+"."+(to.getUTCMonth()+1)+"."+to.getUTCFullYear());
+                labelsX.push(to.getDate()+"."+(to.getMonth()+1)+"."+to.getFullYear());
             else
-                labelsX.push(from.getUTCDate()+"."+(from.getUTCMonth()+1)+"."+from.getUTCFullYear() + " - \n" + to.getUTCDate()+"."+(to.getUTCMonth()+1)+"."+to.getUTCFullYear());
+                labelsX.push(from.getDate()+"."+(from.getMonth()+1)+"."+from.getFullYear() + " - \n" + to.getDate()+"."+(to.getMonth()+1)+"."+to.getFullYear());
         })
     
         this.chartDataBars = {

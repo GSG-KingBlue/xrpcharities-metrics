@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StatisticsService } from '../services/statistics.service';
+import * as formatUtil from '../util/formattingUtil';
 
 @Component({
     selector: 'latestDonors',
@@ -76,7 +77,6 @@ export class LatestDonorsComponent implements OnInit {
     }
 
     formatDate(date:string) {
-        let moment:Date = new Date(new Date(date).toUTCString() + '+0200');
-        return moment.toLocaleString(Intl.DateTimeFormat().resolvedOptions().locale, {timeZone: 'Europe/Berlin'} );
+        return formatUtil.dateToStringEuropeForLocale(formatUtil.initializeStringDateAsGMT2(date));
     }
 }
